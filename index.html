@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chúc Mừng Ngày 20/10 - Gửi Chị Ngân</title>
-    <!-- Nhúng Font Awesome để hiện icon trái tim -->
+    <!-- Nhúng Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
@@ -24,48 +24,99 @@
             position: relative;
         }
 
+        /* Hiệu ứng chữ/icon rơi ở background */
+        .falling-item {
+            position: absolute;
+            top: -50px;
+            color: rgba(255, 77, 109, 0.6);
+            font-size: 18px;
+            font-weight: bold;
+            user-select: none;
+            pointer-events: none;
+            animation: fall linear infinite;
+            z-index: 1;
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateY(-50px) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(105vh) rotate(360deg);
+                opacity: 0.2;
+            }
+        }
+
         /* Tiêu đề phía trên */
         h2 {
             color: #d90429;
-            margin-bottom: 25px;
-            font-size: 26px;
+            margin-bottom: 15px;
+            font-size: 24px;
             text-align: center;
             animation: bounce 1.5s infinite;
+            z-index: 2;
         }
 
-        /* Trái tim / Nút bấm mở thư */
+        /* Dòng chữ "Click vào đây" kèm hiệu ứng neon */
+        .click-text {
+            color: #fff;
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            cursor: pointer;
+            z-index: 2;
+            text-shadow: 0 0 5px #ff4d6d, 0 0 10px #ff4d6d, 0 0 20px #ff4d6d, 0 0 40px #d90429;
+            animation: neonGlow 1.5s ease-in-out infinite alternate;
+        }
+
+        .click-text:hover {
+            transform: scale(1.1);
+        }
+
+        @keyframes neonGlow {
+            from {
+                text-shadow: 0 0 5px #fff, 0 0 10px #ff4d6d, 0 0 20px #ff4d6d, 0 0 30px #ff4d6d;
+            }
+            to {
+                text-shadow: 0 0 10px #fff, 0 0 20px #ff758f, 0 0 30px #ff758f, 0 0 40px #ff4d6d;
+            }
+        }
+
+        /* Trái tim thu nhỏ lại */
         .heart-btn {
             position: relative;
-            width: 140px;
-            height: 140px;
+            width: 90px;
+            height: 90px;
             background-color: #ff4d6d;
             transform: rotate(-45deg);
             cursor: pointer;
             display: flex;
             justify-content: center;
             align-items: center;
-            box-shadow: 0 10px 20px rgba(217, 4, 41, 0.3);
+            box-shadow: 0 8px 20px rgba(217, 4, 41, 0.3);
             transition: transform 0.3s ease, background-color 0.3s ease;
             animation: pulse 1.2s infinite alternate;
+            z-index: 2;
         }
 
         .heart-btn::before,
         .heart-btn::after {
             content: "";
             position: absolute;
-            width: 140px;
-            height: 140px;
+            width: 90px;
+            height: 90px;
             background-color: #ff4d6d;
             border-radius: 50%;
         }
 
         .heart-btn::before {
-            top: -70px;
+            top: -45px;
             left: 0;
         }
 
         .heart-btn::after {
-            left: 70px;
+            left: 45px;
             top: 0;
         }
 
@@ -75,11 +126,11 @@
             transform: rotate(45deg);
             color: white;
             font-weight: bold;
-            font-size: 16px;
-            z-index: 2;
+            font-size: 13px;
+            z-index: 3;
             text-align: center;
-            width: 120px;
-            line-height: 1.3;
+            width: 90px;
+            line-height: 1.2;
             text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
         }
 
@@ -162,9 +213,13 @@
 </head>
 <body>
 
+    <!-- Tiêu đề -->
     <h2>Nhân dịp ngày 20/10 &lt;3</h2>
 
-    <!-- Nút hình trái tim chứa chữ "Gửi Chị Ngân" -->
+    <!-- Chữ click vào đây có hiệu ứng neon -->
+    <div class="click-text" onclick="openMail()">✨ Click vào đây ✨</div>
+
+    <!-- Trái tim nhỏ hơn -->
     <div class="heart-btn" onclick="openMail()">
         <span>Gửi Chị Ngân</span>
     </div>
@@ -189,6 +244,26 @@
         function closeMail() {
             document.getElementById('boxMail').style.display = 'none';
         }
+
+        // Tạo hiệu ứng chữ và icon rơi ngẫu nhiên trên background
+        const items = ["20/10 vuive", "💖", "🫶", "💗"];
+        function createFallingItem() {
+            const container = document.createElement('div');
+            container.classList.add('falling-item');
+            container.innerText = items[Math.floor(Math.random() * items.length)];
+            
+            container.style.left = Math.random() * window.innerWidth + 'px';
+            container.style.animationDuration = (Math.random() * 3 + 3) + 's'; // Rơi từ 3 đến 6 giây
+            container.style.fontSize = (Math.random() * 10 + 14) + 'px';
+            
+            document.body.appendChild(container);
+
+            setTimeout(() => {
+                container.remove();
+            }, 6000);
+        }
+
+        setInterval(createFallingItem, 400);
     </script>
 
 </body>
