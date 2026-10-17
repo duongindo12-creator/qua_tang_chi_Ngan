@@ -24,66 +24,47 @@
             position: relative;
         }
 
-        /* Hiệu ứng chữ/icon rơi ở background */
+        /* Hiệu ứng rơi thẳng, dày hơn và có tàn ảnh */
         .falling-item {
             position: absolute;
             top: -50px;
-            color: rgba(255, 77, 109, 0.6);
+            color: rgba(255, 77, 109, 0.7);
             font-size: 18px;
             font-weight: bold;
             user-select: none;
             pointer-events: none;
-            animation: fall linear infinite;
+            animation: fallStraight linear infinite;
             z-index: 1;
         }
 
-        @keyframes fall {
+        @keyframes fallStraight {
             0% {
-                transform: translateY(-50px) rotate(0deg);
+                transform: translateY(-50px);
                 opacity: 1;
+                filter: blur(0px);
+            }
+            80% {
+                opacity: 0.6;
+                filter: blur(0.5px);
             }
             100% {
-                transform: translateY(105vh) rotate(360deg);
-                opacity: 0.2;
+                transform: translateY(105vh);
+                opacity: 0; /* Hiệu ứng tàn ảnh mờ dần khi biến mất */
+                filter: blur(1.5px);
             }
         }
 
         /* Tiêu đề phía trên */
         h2 {
             color: #d90429;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
             font-size: 24px;
             text-align: center;
             animation: bounce 1.5s infinite;
             z-index: 2;
         }
 
-        /* Dòng chữ "Click vào đây" kèm hiệu ứng neon */
-        .click-text {
-            color: #fff;
-            font-size: 18px;
-            font-weight: bold;
-            margin-bottom: 15px;
-            cursor: pointer;
-            z-index: 2;
-            text-shadow: 0 0 5px #ff4d6d, 0 0 10px #ff4d6d, 0 0 20px #ff4d6d, 0 0 40px #d90429;
-            animation: neonGlow 1.5s ease-in-out infinite alternate;
-        }
-
-        .click-text:hover {
-            transform: scale(1.1);
-        }
-
-        @keyframes neonGlow {
-            from {
-                text-shadow: 0 0 5px #fff, 0 0 10px #ff4d6d, 0 0 20px #ff4d6d, 0 0 30px #ff4d6d;
-            }
-            to {
-                text-shadow: 0 0 10px #fff, 0 0 20px #ff758f, 0 0 30px #ff758f, 0 0 40px #ff4d6d;
-            }
-        }
-
-        /* Trái tim thu nhỏ lại */
+        /* Trái tim thu nhỏ */
         .heart-btn {
             position: relative;
             width: 90px;
@@ -94,177 +75,4 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            box-shadow: 0 8px 20px rgba(217, 4, 41, 0.3);
-            transition: transform 0.3s ease, background-color 0.3s ease;
-            animation: pulse 1.2s infinite alternate;
-            z-index: 2;
-        }
-
-        .heart-btn::before,
-        .heart-btn::after {
-            content: "";
-            position: absolute;
-            width: 90px;
-            height: 90px;
-            background-color: #ff4d6d;
-            border-radius: 50%;
-        }
-
-        .heart-btn::before {
-            top: -45px;
-            left: 0;
-        }
-
-        .heart-btn::after {
-            left: 45px;
-            top: 0;
-        }
-
-        /* Chữ hiển thị bên trong trái tim */
-        .heart-btn span {
-            position: absolute;
-            transform: rotate(45deg);
-            color: white;
-            font-weight: bold;
-            font-size: 13px;
-            z-index: 3;
-            text-align: center;
-            width: 90px;
-            line-height: 1.2;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
-        }
-
-        .heart-btn:hover {
-            background-color: #ef233c;
-        }
-        .heart-btn:hover::before,
-        .heart-btn:hover::after {
-            background-color: #ef233c;
-        }
-
-        /* Hộp thư */
-        .box-mail {
-            display: none;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 90%;
-            max-width: 480px;
-            background: #fff0f3;
-            border: 2px solid #ff4d6d;
-            border-radius: 15px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.25);
-            padding: 25px 20px 20px 20px;
-            z-index: 10;
-            animation: fadeIn 0.4s ease-in-out;
-        }
-
-        .mail h1 {
-            color: #d90429;
-            font-size: 20px;
-            margin-bottom: 15px;
-            line-height: 1.4;
-        }
-
-        .mail p {
-            color: #333;
-            font-size: 15px;
-            line-height: 1.6;
-            margin-bottom: 15px;
-            text-align: justify;
-        }
-
-        .mail .sign {
-            text-align: right;
-            font-style: italic;
-            color: #d90429;
-            font-weight: bold;
-            font-size: 15px;
-        }
-
-        /* Nút đóng hộp thư */
-        .btn-close {
-            position: absolute;
-            top: 10px;
-            right: 15px;
-            background: none;
-            border: none;
-            font-size: 22px;
-            color: #d90429;
-            cursor: pointer;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translate(-50%, -55%); }
-            to { opacity: 1; transform: translate(-50%, -50%); }
-        }
-
-        @keyframes bounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-6px); }
-        }
-
-        @keyframes pulse {
-            0% { transform: rotate(-45deg) scale(1); }
-            100% { transform: rotate(-45deg) scale(1.08); }
-        }
-    </style>
-</head>
-<body>
-
-    <!-- Tiêu đề -->
-    <h2>Nhân dịp ngày 20/10 &lt;3</h2>
-
-    <!-- Chữ click vào đây có hiệu ứng neon -->
-    <div class="click-text" onclick="openMail()">✨ Click vào đây ✨</div>
-
-    <!-- Trái tim nhỏ hơn -->
-    <div class="heart-btn" onclick="openMail()">
-        <span>Gửi Chị Ngân</span>
-    </div>
-
-    <!-- Hộp thư nội dung -->
-    <div class="box-mail" id="boxMail">
-        <button class="btn-close" onclick="closeMail()">&times;</button>
-        <div class="mail">
-            <h1 style="text-align: center;">
-                💖 Gửi Chị Ngân yêu dấu!!!💖
-            </h1>
-            <p>Em chúc chị Ngân luôn xinh đẹp, rạng rỡ và luôn tự tin tỏa sáng theo cách riêng của mình, mong rằng mọi dự định của chị đều gặt hái thật nhiều thành công, và mỗi ngày trôi qua đều ngập tràn niềm vui, bình yên cùng sự may mắn ạaaaaa!</p>
-            <p style="margin-bottom: 5px;">❤❤Kí tên❤❤</p>
-            <p class="sign">Dưn Dưn gửi chị</p>
-        </div>
-    </div>
-
-    <script>
-        function openMail() {
-            document.getElementById('boxMail').style.display = 'block';
-        }
-        function closeMail() {
-            document.getElementById('boxMail').style.display = 'none';
-        }
-
-        // Tạo hiệu ứng chữ và icon rơi ngẫu nhiên trên background
-        const items = ["20/10 vuive", "💖", "🫶", "💗"];
-        function createFallingItem() {
-            const container = document.createElement('div');
-            container.classList.add('falling-item');
-            container.innerText = items[Math.floor(Math.random() * items.length)];
-            
-            container.style.left = Math.random() * window.innerWidth + 'px';
-            container.style.animationDuration = (Math.random() * 3 + 3) + 's'; // Rơi từ 3 đến 6 giây
-            container.style.fontSize = (Math.random() * 10 + 14) + 'px';
-            
-            document.body.appendChild(container);
-
-            setTimeout(() => {
-                container.remove();
-            }, 6000);
-        }
-
-        setInterval(createFallingItem, 400);
-    </script>
-
-</body>
-</html>
+            box-shadow: 0 8px 2
