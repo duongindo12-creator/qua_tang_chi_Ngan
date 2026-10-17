@@ -13,7 +13,7 @@
             box-sizing: border-box;
         }
         body {
-            background-color: #fff5f7;
+            background-color: #ffccd5;
             height: 100vh;
             display: flex;
             flex-direction: column;
@@ -24,17 +24,17 @@
             position: relative;
         }
 
-        /* Hiệu ứng rơi thẳng, tàn ảnh và không cản trở thao tác click */
+        /* Hiệu ứng rơi thẳng, dày hơn và có tàn ảnh */
         .falling-item {
             position: absolute;
             top: -50px;
-            color: rgba(255, 77, 109, 0.65);
+            color: rgba(255, 77, 109, 0.7);
             font-size: 18px;
             font-weight: bold;
             user-select: none;
             pointer-events: none;
             animation: fallStraight linear infinite;
-            z-index: 0;
+            z-index: 1;
         }
 
         @keyframes fallStraight {
@@ -44,87 +44,107 @@
                 filter: blur(0px);
             }
             80% {
-                opacity: 0.5;
+                opacity: 0.6;
                 filter: blur(0.5px);
             }
             100% {
                 transform: translateY(105vh);
-                opacity: 0;
+                opacity: 0; /* Hiệu ứng tàn ảnh mờ dần khi biến mất */
                 filter: blur(1.5px);
             }
         }
 
-        /* Khung bố cục chính theo hình phác thảo */
-        .container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            z-index: 5;
-            text-align: center;
-        }
-
-        /* 1. Dòng tiêu đề trên cùng */
+        /* Tiêu đề phía trên */
         h2 {
             color: #d90429;
+            margin-bottom: 20px;
             font-size: 24px;
-            margin-bottom: 25px;
+            text-align: center;
             animation: bounce 1.5s infinite;
+            z-index: 2;
         }
 
-        /* 2. Trái tim ở giữa */
-        .heart-icon {
-            font-size: 90px;
-            color: #ff4d6d;
-            margin-bottom: 20px;
-            animation: pulse 1.2s infinite alternate;
-            filter: drop-shadow(0 6px 12px rgba(217, 4, 41, 0.3));
-        }
-
-        /* 3. Dòng chữ Gửi Chị Ngân bên dưới trái tim */
-        .sub-title {
-            color: #d90429;
-            font-size: 20px;
-            font-weight: bold;
-            margin-bottom: 20px;
+        /* Trái tim thu nhỏ */
+        .heart-btn {
+            position: relative;
+            width: 90px;
+            height: 90px;
+            background-color: #ff4d6d;
+            transform: rotate(-45deg);
+            cursor: pointer;
             display: flex;
+            justify-content: center;
             align-items: center;
-            gap: 6px;
+            box-shadow: 0 8px 20px rgba(217, 4, 41, 0.3);
+            transition: transform 0.3s ease, background-color 0.3s ease;
+            animation: pulse 1.2s infinite alternate;
+            z-index: 2;
+            margin-bottom: 20px; /* Tạo khoảng cách với chữ bên dưới */
         }
 
-        /* 4. Nút bấm Click vào đây áp dụng hiệu ứng NEON */
-        .btn-neon {
-            background-color: transparent;
-            color: #d90429;
+        .heart-btn::before,
+        .heart-btn::after {
+            content: "";
+            position: absolute;
+            width: 90px;
+            height: 90px;
+            background-color: #ff4d6d;
+            border-radius: 50%;
+        }
+
+        .heart-btn::before {
+            top: -45px;
+            left: 0;
+        }
+
+        .heart-btn::after {
+            left: 45px;
+            top: 0;
+        }
+
+        /* Chữ hiển thị bên trong trái tim */
+        .heart-btn span {
+            position: absolute;
+            transform: rotate(45deg);
+            color: white;
+            font-weight: bold;
+            font-size: 13px;
+            z-index: 3;
+            text-align: center;
+            width: 90px;
+            line-height: 1.2;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+        }
+
+        .heart-btn:hover {
+            background-color: #ef233c;
+        }
+        .heart-btn:hover::before,
+        .heart-btn:hover::after {
+            background-color: #ef233c;
+        }
+
+        /* Dòng chữ "Click vào đây" nằm ở DƯỚI trái tim kèm hiệu ứng neon */
+        .click-text {
+            color: #fff;
             font-size: 18px;
             font-weight: bold;
-            padding: 10px 24px;
-            border: 2px solid #ff4d6d;
-            border-radius: 25px;
             cursor: pointer;
-            outline: none;
-            box-shadow: 0 0 10px #ff4d6d, inset 0 0 10px #ff4d6d;
-            animation: neonPulse 1.5s ease-in-out infinite alternate;
-            transition: transform 0.2s ease, background-color 0.2s ease;
+            z-index: 2;
+            text-shadow: 0 0 5px #ff4d6d, 0 0 10px #ff4d6d, 0 0 20px #ff4d6d, 0 0 40px #d90429;
+            animation: neonGlow 1.5s ease-in-out infinite alternate;
         }
 
-        .btn-neon:hover {
-            transform: scale(1.08);
-            background-color: rgba(255, 77, 109, 0.1);
+        .click-text:hover {
+            transform: scale(1.1);
         }
 
-        /* Hiệu ứng phát sáng Neon cho nút bấm */
-        @keyframes neonPulse {
+        @keyframes neonGlow {
             from {
-                border-color: #ff4d6d;
-                color: #d90429;
-                box-shadow: 0 0 5px #ffb3c1, 0 0 10px #ff4d6d, inset 0 0 5px #ffb3c1;
-                text-shadow: 0 0 5px #ffb3c1, 0 0 10px #ff4d6d;
+                text-shadow: 0 0 5px #fff, 0 0 10px #ff4d6d, 0 0 20px #ff4d6d, 0 0 30px #ff4d6d;
             }
             to {
-                border-color: #ef233c;
-                color: #ef233c;
-                box-shadow: 0 0 12px #ff4d6d, 0 0 25px #ff758f, inset 0 0 10px #ff4d6d;
-                text-shadow: 0 0 10px #ff758f, 0 0 20px #ff4d6d;
+                text-shadow: 0 0 10px #fff, 0 0 20px #ff758f, 0 0 30px #ff758f, 0 0 40px #ff4d6d;
             }
         }
 
@@ -137,12 +157,12 @@
             transform: translate(-50%, -50%);
             width: 90%;
             max-width: 480px;
-            background: #ffffff;
+            background: #fff0f3;
             border: 2px solid #ff4d6d;
             border-radius: 15px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.25);
             padding: 25px 20px 20px 20px;
-            z-index: 100;
+            z-index: 10;
             animation: fadeIn 0.4s ease-in-out;
         }
 
@@ -192,30 +212,23 @@
         }
 
         @keyframes pulse {
-            0% { transform: scale(1); }
-            100% { transform: scale(1.1); }
+            0% { transform: rotate(-45deg) scale(1); }
+            100% { transform: rotate(-45deg) scale(1.08); }
         }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <!-- 1. Tiêu đề -->
-        <h2>Nhân dịp ngày 20/10 &lt;3</h2>
+    <!-- Tiêu đề -->
+    <h2>Nhân dịp ngày 20/10 &lt;3</h2>
 
-        <!-- 2. Trái tim -->
-        <i class="fa-solid fa-heart heart-icon" onclick="openMail()" style="cursor: pointer;"></i>
-
-        <!-- 3. Dòng chữ Gửi Chị Ngân -->
-        <div class="sub-title">
-            Gửi Chị Ngân <span style="color: #ef233c;">📍</span>
-        </div>
-
-        <!-- 4. Nút bấm hiệu ứng Neon -->
-        <button class="btn-neon" onclick="openMail()">
-            ✨ Click vào đây ✨
-        </button>
+    <!-- Trái tim nhỏ -->
+    <div class="heart-btn" onclick="openMail()">
+        <span>Gửi Chị Ngân</span>
     </div>
+
+    <!-- Chữ "Click vào đây" nằm ở dưới trái tim -->
+    <div class="click-text" onclick="openMail()">✨ Click vào đây ✨</div>
 
     <!-- Hộp thư nội dung -->
     <div class="box-mail" id="boxMail">
@@ -238,7 +251,7 @@
             document.getElementById('boxMail').style.display = 'none';
         }
 
-        // Hiệu ứng chữ và icon rơi ngẫu nhiên
+        // Tạo hiệu ứng rơi thẳng, mật độ dày hơn và tàn ảnh
         const items = ["20/10 vuive", "💖", "🫶", "💗"];
         function createFallingItem() {
             const container = document.createElement('div');
@@ -246,7 +259,7 @@
             container.innerText = items[Math.floor(Math.random() * items.length)];
             
             container.style.left = Math.random() * window.innerWidth + 'px';
-            container.style.animationDuration = (Math.random() * 2 + 2.5) + 's';
+            container.style.animationDuration = (Math.random() * 2 + 2.5) + 's'; // Tốc độ rơi từ 2.5 đến 4.5 giây
             container.style.fontSize = (Math.random() * 8 + 14) + 'px';
             
             document.body.appendChild(container);
@@ -256,6 +269,7 @@
             }, 5000);
         }
 
+        // Tăng mật độ xuất hiện (200 mili-giây tạo 1 item)
         setInterval(createFallingItem, 200);
     </script>
 
