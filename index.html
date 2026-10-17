@@ -13,7 +13,8 @@
             box-sizing: border-box;
         }
         body {
-            background-color: #fff5f7;
+            /* Nền hồng cute như ảnh thứ 2 */
+            background: linear-gradient(180deg, #ffdeeb 0%, #ffc2d1 60%, #ff9ebb 100%);
             height: 100vh;
             display: flex;
             flex-direction: column;
@@ -24,133 +25,99 @@
             position: relative;
         }
 
-        /* Hiệu ứng rơi thẳng, tàn ảnh và không làm cản trở thao tác bấm */
-        .falling-item {
+        /* Canvas làm hiệu ứng Matrix Love Rain kiểu Hacker lãng mạn */
+        #canvasRain {
             position: absolute;
-            top: -50px;
-            color: rgba(255, 77, 109, 0.65);
-            font-size: 18px;
-            font-weight: bold;
-            user-select: none;
-            pointer-events: none; /* Giúp không bị cản cú click chuột/chạm */
-            animation: fallStraight linear infinite;
-            z-index: 0;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none; /* Không cản trở click */
         }
 
-        @keyframes fallStraight {
-            0% {
-                transform: translateY(-50px);
-                opacity: 1;
-                filter: blur(0px);
-            }
-            80% {
-                opacity: 0.5;
-                filter: blur(0.5px);
-            }
-            100% {
-                transform: translateY(105vh);
-                opacity: 0;
-                filter: blur(1.5px);
-            }
+        /* Lớp trang trí trái tim hoa văn bóng bay phía dưới nền (ảnh 2) */
+        .bg-decor {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 180px;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="%23ff758f" fill-opacity="0.25" d="M0,224L48,213.3C96,203,192,181,288,181.3C384,181,480,203,576,224C672,245,768,267,864,250.7C960,235,1056,181,1152,165.3C1248,149,1344,171,1392,181.3L1440,192L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>') bottom repeat-x;
+            z-index: 2;
+            pointer-events: none;
         }
 
-        /* Khung chứa toàn bộ phần nút bấm để dễ click */
-        .wrapper-click {
+        /* Khung nội dung chính bố cục theo phác thảo */
+        .container {
             display: flex;
             flex-direction: column;
             align-items: center;
-            cursor: pointer;
             z-index: 5;
+            text-align: center;
         }
 
-        /* Tiêu đề phía trên */
+        /* 1. Tiêu đề */
         h2 {
             color: #d90429;
+            font-size: 26px;
             margin-bottom: 25px;
-            font-size: 24px;
-            text-align: center;
+            text-shadow: 0 2px 4px rgba(255, 255, 255, 0.8);
             animation: bounce 1.5s infinite;
-            z-index: 5;
         }
 
-        /* Trái tim */
-        .heart-btn {
-            position: relative;
-            width: 90px;
-            height: 90px;
-            background-color: #ff4d6d;
-            transform: rotate(-45deg);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            box-shadow: 0 8px 20px rgba(217, 4, 41, 0.25);
-            transition: transform 0.3s ease, background-color 0.3s ease;
+        /* 2. Trái tim ở giữa */
+        .heart-icon {
+            font-size: 95px;
+            color: #ff4d6d;
+            margin-bottom: 20px;
             animation: pulse 1.2s infinite alternate;
-            margin-bottom: 25px;
+            filter: drop-shadow(0 6px 12px rgba(217, 4, 41, 0.35));
         }
 
-        .heart-btn::before,
-        .heart-btn::after {
-            content: "";
-            position: absolute;
-            width: 90px;
-            height: 90px;
-            background-color: #ff4d6d;
-            border-radius: 50%;
-        }
-
-        .heart-btn::before {
-            top: -45px;
-            left: 0;
-        }
-
-        .heart-btn::after {
-            left: 45px;
-            top: 0;
-        }
-
-        /* Chữ hiển thị bên trong trái tim */
-        .heart-btn span {
-            position: absolute;
-            transform: rotate(45deg);
-            color: white;
+        /* 3. Dòng chữ Gửi Chị Ngân */
+        .sub-title {
+            color: #d90429;
+            font-size: 22px;
             font-weight: bold;
-            font-size: 13px;
-            z-index: 6;
-            text-align: center;
-            width: 90px;
-            line-height: 1.2;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+            margin-bottom: 20px;
+            text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
         }
 
-        .wrapper-click:hover .heart-btn {
-            background-color: #ef233c;
-            transform: rotate(-45deg) scale(1.05);
-        }
-        .wrapper-click:hover .heart-btn::before,
-        .wrapper-click:hover .heart-btn::after {
-            background-color: #ef233c;
-        }
-
-        /* Dòng chữ "Click vào đây" nằm ở DƯỚI trái tim kèm hiệu ứng neon */
-        .click-text {
+        /* 4. Nút bấm Click vào đây áp dụng hiệu ứng NEON */
+        .btn-neon {
+            background-color: rgba(255, 255, 255, 0.2);
             color: #d90429;
             font-size: 18px;
             font-weight: bold;
-            text-shadow: 0 0 5px #ffb3c1, 0 0 10px #ff4d6d;
-            animation: neonGlow 1.5s ease-in-out infinite alternate;
+            padding: 12px 28px;
+            border: 2px solid #ff4d6d;
+            border-radius: 25px;
+            cursor: pointer;
+            outline: none;
+            backdrop-filter: blur(2px);
+            box-shadow: 0 0 10px #ff4d6d, inset 0 0 10px #ff4d6d;
+            animation: neonPulse 1.5s ease-in-out infinite alternate;
+            transition: transform 0.2s ease;
         }
 
-        .wrapper-click:hover .click-text {
-            transform: scale(1.1);
+        .btn-neon:hover {
+            transform: scale(1.08);
+            background-color: rgba(255, 255, 255, 0.4);
         }
 
-        @keyframes neonGlow {
+        @keyframes neonPulse {
             from {
-                text-shadow: 0 0 5px #fff, 0 0 10px #ff4d6d, 0 0 15px #ff4d6d;
+                border-color: #ff4d6d;
+                color: #d90429;
+                box-shadow: 0 0 5px #fff, 0 0 10px #ff4d6d, inset 0 0 5px #fff;
+                text-shadow: 0 0 5px #fff, 0 0 10px #ff4d6d;
             }
             to {
-                text-shadow: 0 0 10px #fff, 0 0 20px #ff758f, 0 0 30px #ff4d6d;
+                border-color: #ef233c;
+                color: #ef233c;
+                box-shadow: 0 0 12px #ff4d6d, 0 0 25px #ff758f, inset 0 0 10px #ff4d6d;
+                text-shadow: 0 0 10px #ff758f, 0 0 20px #ff4d6d;
             }
         }
 
@@ -166,7 +133,7 @@
             background: #ffffff;
             border: 2px solid #ff4d6d;
             border-radius: 15px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
             padding: 25px 20px 20px 20px;
             z-index: 100;
             animation: fadeIn 0.4s ease-in-out;
@@ -195,7 +162,6 @@
             font-size: 15px;
         }
 
-        /* Nút đóng hộp thư */
         .btn-close {
             position: absolute;
             top: 10px;
@@ -218,27 +184,36 @@
         }
 
         @keyframes pulse {
-            0% { transform: rotate(-45deg) scale(1); }
-            100% { transform: rotate(-45deg) scale(1.08); }
+            0% { transform: scale(1); }
+            100% { transform: scale(1.1); }
         }
     </style>
 </head>
 <body>
 
-    <!-- Tiêu đề -->
-    <h2>Nhân dịp ngày 20/10 &lt;3</h2>
+    <!-- Canvas làm hiệu ứng Love Rain ma trận rơi chữ như ảnh 1 -->
+    <canvas id="canvasRain"></canvas>
 
-    <!-- Gộp chung Trái tim và Chữ Click vào một khung để bấm vào đâu cũng mở được -->
-    <div class="wrapper-click" onclick="openMail()">
-        <div class="heart-btn">
-            <span>Gửi Chị Ngân</span>
+    <!-- Trang trí bóng nền phía dưới như ảnh 2 -->
+    <div class="bg-decor"></div>
+
+    <div class="container">
+        <h2>Nhân dịp ngày 20/10 &lt;3</h2>
+
+        <i class="fa-solid fa-heart heart-icon" onclick="openMail()" style="cursor: pointer;"></i>
+
+        <div class="sub-title">
+            Gửi Chị Ngân 📍
         </div>
-        <div class="click-text">✨ Click vào đây ✨</div>
+
+        <button class="btn-neon" onclick="openMail()">
+            ✨ Click vào đây ✨
+        </button>
     </div>
 
     <!-- Hộp thư nội dung -->
     <div class="box-mail" id="boxMail">
-        <button class="btn-close" onclick="event.stopPropagation(); closeMail()">&times;</button>
+        <button class="btn-close" onclick="closeMail()">&times;</button>
         <div class="mail">
             <h1 style="text-align: center;">
                 💖 Gửi Chị Ngân yêu dấu!!!💖
@@ -257,26 +232,39 @@
             document.getElementById('boxMail').style.display = 'none';
         }
 
-        // Tạo hiệu ứng rơi thẳng, mật độ dày và tàn ảnh
-        const items = ["20/10 vuive", "💖", "🫶", "💗"];
-        function createFallingItem() {
-            const container = document.createElement('div');
-            container.classList.add('falling-item');
-            container.innerText = items[Math.floor(Math.random() * items.length)];
-            
-            container.style.left = Math.random() * window.innerWidth + 'px';
-            container.style.animationDuration = (Math.random() * 2 + 2.5) + 's';
-            container.style.fontSize = (Math.random() * 8 + 14) + 'px';
-            
-            document.body.appendChild(container);
+        /* --- CODE HIỆU ỨNG MA TRẬN CHỮ RƠI (LOVE RAIN MATRIX) NHƯ ẢNH 1 --- */
+        const canvas = document.getElementById('canvasRain');
+        const ctx = canvas.getContext('2d');
 
-            setTimeout(() => {
-                container.remove();
-            }, 5000);
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
         }
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
 
-        setInterval(createFallingItem, 200);
-    </script>
+        // Các ký tự / từ rơi xuống
+        const words = ["20/10 vuive", "💖", "🫶", "💗", "Te amo", "Chị Ngân"];
+        const fontSize = 16;
+        let columns = Math.floor(canvas.width / (fontSize * 3));
+        let drops = [];
 
-</body>
-</html>
+        function initDrops() {
+            columns = Math.floor(canvas.width / (fontSize * 3));
+            drops = [];
+            for (let i = 0; i < columns; i++) {
+                drops[i] = Math.floor(Math.random() * -100); // Vị trí ngẫu nhiên phía trên màn hình
+            }
+        }
+        initDrops();
+
+        function drawMatrixRain() {
+            // Phủ lớp mờ để tạo tàn ảnh đuôi chữ rơi
+            ctx.fillStyle = 'rgba(255, 222, 235, 0.15)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            ctx.fillStyle = '#ff2a55'; // Màu chữ hồng neon đậm
+            ctx.font = 'bold ' + fontSize + 'px sans-serif';
+
+            for (let i = 0; i < drops.length; i++) {
+                const text = words[Math.floor(Math.random() * words.length)];
